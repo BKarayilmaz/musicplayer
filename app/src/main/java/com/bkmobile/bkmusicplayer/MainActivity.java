@@ -32,9 +32,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         listView=findViewById(R.id.listViewSong);
+
+
+
 
         if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED){
@@ -85,17 +87,21 @@ private void requestStoragePermission(){
 
     public ArrayList<File> findSong(File file){
         ArrayList<File>arrayList=new ArrayList<>();
+        try {
         File[] files= file.listFiles();
 
         for(File singleFile: files){
-            if(singleFile.isDirectory()&&!singleFile.isHidden()){
-                arrayList.addAll(findSong(singleFile));
-            }
-            else{
-                if(singleFile.getName().endsWith(".mp3")||singleFile.getName().endsWith(".wav")){
-                    arrayList.add(singleFile);
+                if(singleFile.isDirectory()&&!singleFile.isHidden()){
+                    arrayList.addAll(findSong(singleFile));
                 }
-            }
+                else{
+                    if(singleFile.getName().endsWith(".mp3")||singleFile.getName().endsWith(".wav")){
+                        arrayList.add(singleFile);
+                    }
+                }
+
+        } } catch (NullPointerException e) {
+            Toast.makeText(MainActivity.this, "Error : " + e + " " + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_SHORT).show();
         }
         return arrayList;
     }
@@ -105,7 +111,7 @@ private void requestStoragePermission(){
 
         items=new String[mySongs.size()];
         for(int i=0;i<mySongs.size();i++){
-            items[i]=mySongs.get(i).getName().toString().replace(".mp4","").replace(".wav","");
+            items[i]=mySongs.get(i).getName().toString().replace(".mp3","").replace(".wav","");
         }
        /* ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,items);
         listView.setAdapter(myAdapter);*/

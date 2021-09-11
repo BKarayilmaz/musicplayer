@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
 <ListView
-   android:id="@+id/listViewSong"
+   android:id="@+id/listViewMySong"
     android:divider="@android:color/transparent"
     android:dividerHeight="10.0sp"
     android:padding="8dp"

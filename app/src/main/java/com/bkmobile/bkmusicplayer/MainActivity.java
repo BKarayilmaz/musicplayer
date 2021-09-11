@@ -21,10 +21,11 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity {
 
-    ListView listView;
+    public ListView listView;
     String[] items;
 
     private int storeagePermissionCode=1;
@@ -32,23 +33,51 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        listView=findViewById(R.id.listViewSong);
-
+        setContentView(R.layout.activity_main);
 
 
-
+        listView=findViewById(R.id.listViewMySong);
         if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED){
             Toast.makeText(MainActivity.this, "You Have Already Granted This Permission!", Toast.LENGTH_SHORT).show();
-            displaySongs();
 
+            displaySongs();
         }
         else{
+            listView=findViewById(R.id.listViewMySong);
             requestStoragePermission();
         }
 
 
+    }
+
+    public class CustomAdapter extends BaseAdapter{
+
+        @Override
+        public int getCount() {
+            return items.length;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            View myView= getLayoutInflater().inflate(R.layout.list_item,null);
+            TextView textSong=myView.findViewById(R.id.txtsongname);
+            //listView=(ListView) myView.findViewById(R.id.listViewSong);
+            textSong.setSelected(true);
+            textSong.setText(items[i]);
+
+            return myView;
+        }
     }
 
 private void requestStoragePermission(){
@@ -87,63 +116,54 @@ private void requestStoragePermission(){
 
     public ArrayList<File> findSong(File file){
         ArrayList<File>arrayList=new ArrayList<>();
-        try {
-        File[] files= file.listFiles();
+        String deneme;
+        deneme=file.toString();
+        //System.out.println(deneme);
+        //System.out.println(deneme+" try");
+            try {
+                //if(deneme!="/storage/emulated/0/Android/data"||deneme!="/storage/emulated/0/Android/obb"){
+                File[] files = file.listFiles();
+                //System.out.println(file+"Try");
+                for (File singleFile : files) {
+                    if (singleFile.isDirectory() && !singleFile.isHidden()) {
+                        arrayList.addAll(findSong(singleFile));
+                    } else {
+                        if (singleFile.getName().endsWith(".mp3") || singleFile.getName().endsWith(".wav")) {
+                            arrayList.add(singleFile);
+                        }
 
-        for(File singleFile: files){
-                if(singleFile.isDirectory()&&!singleFile.isHidden()){
-                    arrayList.addAll(findSong(singleFile));
-                }
-                else{
-                    if(singleFile.getName().endsWith(".mp3")||singleFile.getName().endsWith(".wav")){
-                        arrayList.add(singleFile);
                     }
+                    //}
                 }
+            } catch (NullPointerException e) {
+                //deneme = file.toString();
+                //System.out.println(deneme + "Fuck catch");
+                Toast.makeText(MainActivity.this, "Error : " + e + " " + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_SHORT).show();
+            }
 
-        } } catch (NullPointerException e) {
-            Toast.makeText(MainActivity.this, "Error : " + e + " " + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_SHORT).show();
-        }
         return arrayList;
     }
 
-    void  displaySongs(){
+    public void  displaySongs(){
         final ArrayList<File> mySongs=findSong(Environment.getExternalStorageDirectory());
 
         items=new String[mySongs.size()];
         for(int i=0;i<mySongs.size();i++){
             items[i]=mySongs.get(i).getName().toString().replace(".mp3","").replace(".wav","");
         }
-       /* ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,items);
+       /*ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,items);
         listView.setAdapter(myAdapter);*/
-        customAdapter customAdapter=new customAdapter();
+       //try {
+
+            CustomAdapter customAdapter=new CustomAdapter();
         listView.setAdapter(customAdapter);
+        //}catch (NullPointerException e){
+          //  System.out.println("Error");
+            //Toast.makeText(MainActivity.this, "Error : " + e + " " + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_SHORT).show();
+        //}
+
+
     }
 
-    class customAdapter extends BaseAdapter{
 
-        @Override
-        public int getCount() {
-            return items.length;
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            View myView=getLayoutInflater().inflate(R.layout.list_item,null);
-            TextView textSong=myView.findViewById(R.id.txtsongname);
-            textSong.setSelected(true);
-            textSong.setText(items[i]);
-
-            return myView;
-        }
-    }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/pexels2"
+    android:background="@drawable/img_background"
     android:orientation="vertical"
     android:weightSum="10"
     tools:context=".PlayerActivity">
@@ -34,11 +34,10 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_marginBottom="8dp"
             android:layout_width="250dp"
             android:layout_height="250dp"
-            android:background="@color/cardview_dark_background"
-            ></ImageView>
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/ic_music"></ImageView>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -89,7 +88,7 @@
             <Button
                 android:id="@+id/playBtn"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/ic_play"
+                android:background="@drawable/ic_pause"
                 android:layout_width="70dp"
                 android:layout_height="70dp"></Button>
             <Button
@@ -107,25 +106,25 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"></Button>
 
-            <Button
-                android:id="@+id/ffButton"
-                android:layout_toRightOf="@+id/nextBtn"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="15dp"
-                android:background="@drawable/ic_fast_forward"
-                android:layout_width="40dp"
-                android:layout_height="40dp"></Button>
-            <Button
-                android:id="@+id/frButton"
-                android:layout_toLeftOf="@+id/prevBtn"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="15dp"
-                android:background="@drawable/ic_fast_rewind"
-                android:layout_width="40dp"
-                android:layout_height="40dp"></Button>
+            <!-- <Button
+                 android:id="@+id/ffButton"
+                 android:layout_toRightOf="@+id/nextBtn"
+                 android:layout_marginTop="20dp"
+                 android:layout_marginLeft="15dp"
+                 android:background="@drawable/ic_fast_forward"
+                 android:layout_width="40dp"
+                 android:layout_height="40dp"></Button>-->
+             <!--  <Button
+                   android:id="@+id/frButton"
+                   android:layout_toLeftOf="@+id/prevBtn"
+                   android:layout_marginTop="20dp"
+                   android:layout_marginRight="15dp"
+                   android:background="@drawable/ic_fast_rewind"
+                   android:layout_width="40dp"
+                   android:layout_height="40dp"></Button>-->
 
-        </RelativeLayout>
+          </RelativeLayout>
 
-    </LinearLayout>
+      </LinearLayout>
 
-</LinearLayout>
+  </LinearLayout>

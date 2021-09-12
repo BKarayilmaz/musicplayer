@@ -8,11 +8,13 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -138,7 +140,7 @@ private void requestStoragePermission(){
             } catch (NullPointerException e) {
                 //deneme = file.toString();
                 //System.out.println(deneme + "Fuck catch");
-                Toast.makeText(MainActivity.this, "Error : " + e + " " + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Error : " + e + " " + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_SHORT).show();
             }
 
         return arrayList;
@@ -157,6 +159,15 @@ private void requestStoragePermission(){
 
             CustomAdapter customAdapter=new CustomAdapter();
         listView.setAdapter(customAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String songName=(String) listView.getItemAtPosition(i);
+                startActivity(new Intent(getApplicationContext(),PlayerActivity.class).putExtra("songs",mySongs)
+                        .putExtra("songName",songName).putExtra("pos",i));
+            }
+        });
         //}catch (NullPointerException e){
           //  System.out.println("Error");
             //Toast.makeText(MainActivity.this, "Error : " + e + " " + e.getStackTrace()[0].getLineNumber(), Toast.LENGTH_SHORT).show();
